@@ -14,16 +14,14 @@ export default function Login() {
   // Handle form state, validation, and submit logic
   const formik = useFormik({
     initialValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
     validate: (values) => {
       const errors = {};
 
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
+      if (!values.identifier.trim()) {
+        errors.identifier = "Please enter your email address or username.";
       }
 
       if (!values.password) {
@@ -37,7 +35,7 @@ export default function Login() {
     onSubmit: (values) => {
       setSubmitError("");
 
-      const result = login(values.email, values.password);
+      const result = login(values.identifier, values.password);
 
       if (!result.success) {
         setSubmitError(result.message);
@@ -62,19 +60,19 @@ export default function Login() {
 
           <Form onSubmit={formik.handleSubmit} className="auth-form">
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="email">Email Address</Form.Label>
+              <Form.Label htmlFor="identifier">Email or Username</Form.Label>
               <Form.Control
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                autoComplete="email"
-                value={formik.values.email}
+                id="identifier"
+                name="identifier"
+                type="text"
+                placeholder="Enter your email or username"
+                autoComplete="username"
+                value={formik.values.identifier}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.email && formik.errors.email && (
-                <div className="form-error">{formik.errors.email}</div>
+              {formik.touched.identifier && formik.errors.identifier && (
+                <div className="form-error">{formik.errors.identifier}</div>
               )}
             </Form.Group>
 

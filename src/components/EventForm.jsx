@@ -84,17 +84,24 @@ export default function EventForm({
   const formik = useFormik({
     initialValues: {
       name: initialData?.name || "",
-      category: initialData?.category || "Meeting",
+      category: initialData?.category || "",
       date: initialValues.selectedDate,
       time: initialValues.selectedTime,
       description: initialData?.description || "",
       location: initialData?.location || "",
     },
+
     validate: (values) => {
       const errors = {};
 
       if (!values.name.trim()) {
         errors.name = "Please enter an event name.";
+      } else if (values.name.trim().length > 60) {
+        errors.name = "Event name must be 60 characters or less.";
+      }
+
+      if (!values.category) {
+        errors.category = "Please select a category.";
       }
 
       if (!values.date) {
@@ -107,16 +114,23 @@ export default function EventForm({
 
       if (!values.description.trim()) {
         errors.description = "Please enter a description.";
+      } else if (values.description.trim().length > 1000) {
+        errors.description = "Description must be 1000 characters or less.";
       }
 
       if (!values.location.trim()) {
         errors.location = "Please enter a location.";
+      } else if (values.location.trim().length > 100) {
+        errors.location = "Location must be 100 characters or less.";
       }
 
       return errors;
     },
+
     // Build the event object and pass it up to the parent component
     onSubmit: (values, { resetForm }) => {
+      const selectedCategory = values.category || "Other";
+
       const formData = {
         ...(initialData?.id ? { id: initialData.id } : {}),
         name: values.name.trim(),
@@ -124,8 +138,8 @@ export default function EventForm({
         time: formatTime(values.time),
         description: values.description.trim(),
         location: values.location.trim(),
-        category: values.category,
-        image: categoryImages[values.category],
+        category: selectedCategory,
+        image: categoryImages[selectedCategory],
       };
 
       if (typeof onSubmit === "function") {
@@ -137,7 +151,7 @@ export default function EventForm({
         resetForm({
           values: {
             name: "",
-            category: "Meeting",
+            category: "",
             date: null,
             time: null,
             description: "",
@@ -149,7 +163,7 @@ export default function EventForm({
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit} autoComplete="off">
       <Form.Group className="mb-3">
         <Form.Label htmlFor="name">Event Name</Form.Label>
         <Form.Control
@@ -157,10 +171,13 @@ export default function EventForm({
           name="name"
           type="text"
           placeholder="Enter the event name"
+          autoComplete="off"
+          maxLength={60}
           value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        <div className="form-text">{formik.values.name.length}/60 characters</div>
         {formik.touched.name && formik.errors.name && (
           <div className="form-error">{formik.errors.name}</div>
         )}
@@ -175,12 +192,16 @@ export default function EventForm({
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         >
+          <option value="">Select a category</option>
           {eventCategories.map((item) => (
             <option key={item} value={item}>
               {item}
             </option>
           ))}
         </Form.Select>
+        {formik.touched.category && formik.errors.category && (
+          <div className="form-error">{formik.errors.category}</div>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -227,10 +248,15 @@ export default function EventForm({
           as="textarea"
           rows={4}
           placeholder="Add a short description"
+          maxLength={1000}
+          autoComplete="off"
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        <div className="form-text">
+          {formik.values.description.length}/1000 characters
+        </div>
         {formik.touched.description && formik.errors.description && (
           <div className="form-error">{formik.errors.description}</div>
         )}
@@ -243,10 +269,15 @@ export default function EventForm({
           name="location"
           type="text"
           placeholder="Enter the location"
+          autoComplete="off"
+          maxLength={100}
           value={formik.values.location}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        <div className="form-text">
+          {formik.values.location.length}/100 characters
+        </div>
         {formik.touched.location && formik.errors.location && (
           <div className="form-error">{formik.errors.location}</div>
         )}

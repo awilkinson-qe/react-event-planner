@@ -74,16 +74,19 @@ export function UserProvider({ children }) {
   }
 
   // Check login details against stored users
-  function login(email, password) {
-    const normalisedEmail = email.trim().toLowerCase();
+  function login(identifier, password) {
+    const normalisedIdentifier = identifier.trim().toLowerCase();
 
-    const matchedUser = users.find(
-      (storedUser) =>
-        storedUser.email === normalisedEmail && storedUser.password === password
-    );
+    const matchedUser = users.find((storedUser) => {
+      const matchesEmail = storedUser.email === normalisedIdentifier;
+      const matchesUsername =
+        storedUser.username.toLowerCase() === normalisedIdentifier;
+
+      return (matchesEmail || matchesUsername) && storedUser.password === password;
+    });
 
     if (!matchedUser) {
-      return { success: false, message: "Invalid email or password." };
+      return { success: false, message: "Invalid email, username, or password." };
     }
 
     setUser(matchedUser);

@@ -11,11 +11,11 @@ export default function Header() {
   return (
     <>
       <Navbar
-        bg="dark"
         variant="dark"
         expand="lg"
         sticky="top"
         className="app-navbar"
+        collapseOnSelect
       >
         <Container fluid="lg">
           <Navbar.Brand as={Link} to="/" className="brand">
@@ -26,8 +26,7 @@ export default function Header() {
 
           <Navbar.Collapse id="main-navbar">
             <Nav className="ms-auto align-items-lg-center">
-              {/* Show different links depending on login state */}
-              {user && (
+              {user ? (
                 <>
                   <Nav.Link as={NavLink} to="/" end>
                     Dashboard
@@ -44,29 +43,27 @@ export default function Header() {
                   <Nav.Link onClick={logout} className="nav-logout">
                     Logout
                   </Nav.Link>
-                </>
-              )}
 
-              {!user && (
+                  <Navbar.Text className="user-badge ms-lg-3">
+                    Signed in as: {user.name || user.email}
+                  </Navbar.Text>
+                </>
+              ) : (
                 <>
                   <Nav.Link as={NavLink} to="/login">
                     Login
                   </Nav.Link>
+
                   <Nav.Link as={NavLink} to="/register">
                     Register
                   </Nav.Link>
+
                   <Nav.Link as={NavLink} to="/help">
                     Help
                   </Nav.Link>
                 </>
               )}
             </Nav>
-
-            {user && (
-              <span className="user-badge">
-                Signed in as: {user.name || user.email}
-              </span>
-            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

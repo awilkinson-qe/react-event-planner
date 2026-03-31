@@ -25,7 +25,7 @@ export default function Help() {
 
           <h4>Log in</h4>
           <p>
-            Enter your email and password to access your events.
+            Enter your email or username and password to access your events.
           </p>
 
           <h4>Add an event</h4>
