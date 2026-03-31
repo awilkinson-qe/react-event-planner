@@ -1,12 +1,19 @@
 // Navigation bar and hero banner shown across the app
 import { NavLink, Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContextValue";
 
 export default function Header() {
-  // Get current user and logout function
   const { user, logout } = useContext(UserContext);
+  const [expanded, setExpanded] = useState(false);
+
+  const closeMenu = () => setExpanded(false);
+
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+  };
 
   return (
     <>
@@ -15,10 +22,11 @@ export default function Header() {
         expand="lg"
         sticky="top"
         className="app-navbar"
-        collapseOnSelect
+        expanded={expanded}
+        onToggle={setExpanded}
       >
         <Container fluid="lg">
-          <Navbar.Brand as={Link} to="/" className="brand">
+          <Navbar.Brand as={Link} to="/" className="brand" onClick={closeMenu}>
             Timeline
           </Navbar.Brand>
 
@@ -28,19 +36,19 @@ export default function Header() {
             <Nav className="ms-auto align-items-lg-center">
               {user ? (
                 <>
-                  <Nav.Link as={NavLink} to="/" end>
+                  <Nav.Link as={NavLink} to="/" end onClick={closeMenu}>
                     Dashboard
                   </Nav.Link>
 
-                  <Nav.Link as={NavLink} to="/add-event">
+                  <Nav.Link as={NavLink} to="/add-event" onClick={closeMenu}>
                     Add Event
                   </Nav.Link>
 
-                  <Nav.Link as={NavLink} to="/help">
+                  <Nav.Link as={NavLink} to="/help" onClick={closeMenu}>
                     Help
                   </Nav.Link>
 
-                  <Nav.Link onClick={logout} className="nav-logout">
+                  <Nav.Link onClick={handleLogout} className="nav-logout">
                     Logout
                   </Nav.Link>
 
@@ -50,15 +58,15 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <Nav.Link as={NavLink} to="/login">
+                  <Nav.Link as={NavLink} to="/login" onClick={closeMenu}>
                     Login
                   </Nav.Link>
 
-                  <Nav.Link as={NavLink} to="/register">
+                  <Nav.Link as={NavLink} to="/register" onClick={closeMenu}>
                     Register
                   </Nav.Link>
 
-                  <Nav.Link as={NavLink} to="/help">
+                  <Nav.Link as={NavLink} to="/help" onClick={closeMenu}>
                     Help
                   </Nav.Link>
                 </>
