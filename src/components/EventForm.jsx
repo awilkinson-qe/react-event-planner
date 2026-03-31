@@ -20,16 +20,16 @@ const eventCategories = [
 
 // Map each category to an image shown on the event card
 const categoryImages = {
-  Meeting: "/images/meeting.jpg",
-  Appointment: "/images/appointment.jpg",
-  Food: "/images/food.jpg",
-  Travel: "/images/travel.jpg",
-  Party: "/images/party.jpg",
-  Concert: "/images/concert.jpg",
-  Fitness: "/images/fitness.jpg",
-  Study: "/images/study.jpg",
-  Family: "/images/family.jpg",
-  Other: "/images/other.jpg",
+  Meeting: `${import.meta.env.BASE_URL}images/meeting.jpg`,
+  Appointment: `${import.meta.env.BASE_URL}images/appointment.jpg`,
+  Food: `${import.meta.env.BASE_URL}images/food.jpg`,
+  Travel: `${import.meta.env.BASE_URL}images/travel.jpg`,
+  Party: `${import.meta.env.BASE_URL}images/party.jpg`,
+  Concert: `${import.meta.env.BASE_URL}images/concert.jpg`,
+  Fitness: `${import.meta.env.BASE_URL}images/fitness.jpg`,
+  Study: `${import.meta.env.BASE_URL}images/study.jpg`,
+  Family: `${import.meta.env.BASE_URL}images/family.jpg`,
+  Other: `${import.meta.env.BASE_URL}images/other.jpg`,
 };
 
 // Convert stored date/time strings into Date objects for the picker
