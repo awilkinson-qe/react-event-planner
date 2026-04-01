@@ -238,7 +238,6 @@ body::after {
 }
 
 .content-panel p,
-.content-panel li,
 .content-panel span,
 .content-panel label,
 .content-panel small {
@@ -418,17 +417,16 @@ textarea.form-control {
   width: 100%;
 }
 
+/* Keep datepicker popup readable without over-styling it */
 .react-datepicker {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px;
 }
 
 .react-datepicker__header,
 .react-datepicker__header--time {
-  background: #eff6ff !important;
+  background: #f8fafc !important;
   border-bottom: 1px solid #cbd5e1 !important;
 }
 
@@ -436,24 +434,14 @@ textarea.form-control {
 .react-datepicker-time__header,
 .react-datepicker__day-name,
 .react-datepicker__day,
-.react-datepicker__time-list-item {
+.react-datepicker__time-list-item,
+.react-datepicker__navigation-icon::before {
   color: var(--text-dark) !important;
 }
 
-.react-datepicker__current-month,
-.react-datepicker-time__header {
-  font-weight: 700;
-}
-
-.react-datepicker__navigation-icon::before {
-  border-color: var(--text-dark) !important;
-}
-
-.react-datepicker__time-container,
-.react-datepicker__time,
-.react-datepicker__time-box,
-.react-datepicker__time-list {
-  background: #ffffff !important;
+/* Only disabled time items should appear muted */
+.react-datepicker__time-list-item--disabled {
+  color: #94a3b8 !important;
 }
 
 .react-datepicker__day--selected,
@@ -464,6 +452,7 @@ textarea.form-control {
   color: #ffffff !important;
 }
 
+.react-datepicker__day:hover,
 .react-datepicker__time-list-item:hover {
   background: #dbeafe !important;
   color: var(--text-dark) !important;
@@ -705,4 +694,24 @@ select:-webkit-autofill {
     font-size: 0.9rem;
     text-align: right;
   }
+/* =========================================================
+   15. DATEPICKER FINAL OVERRIDES
+   ========================================================= */
+.react-datepicker__time-list-item {
+  color: var(--text-dark) !important;
+  -webkit-text-fill-color: var(--text-dark) !important;
+  opacity: 1 !important;
+}
+
+.react-datepicker__time-list-item--disabled {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+
+.react-datepicker__time-list-item--selected,
+.react-datepicker__time-list-item--selected:hover {
+  background: var(--brand-strong) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
 }

@@ -42,13 +42,13 @@ function splitDateAndTime(dateString, timeString) {
     : null;
 
   let selectedTime = null;
+
   if (timeString) {
     const [hours, minutes] = timeString.split(":").map(Number);
-    selectedTime = new Date();
-    selectedTime.setHours(hours || 0);
-    selectedTime.setMinutes(minutes || 0);
-    selectedTime.setSeconds(0);
-    selectedTime.setMilliseconds(0);
+
+    // Use a neutral fixed date for the time picker value so edit mode
+    // does not treat earlier times as being in the past
+    selectedTime = new Date(2000, 0, 1, hours || 0, minutes || 0, 0, 0);
   }
 
   return { selectedDate, selectedTime };
@@ -131,8 +131,12 @@ export default function EventForm({
     onSubmit: (values, { resetForm }) => {
       const selectedCategory = values.category || "Other";
 
+      const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+
       const formData = {
         ...(initialData?.id ? { id: initialData.id } : {}),
+        // Preserve the event owner on edit so updated events still match the logged-in user
+        username: initialData?.username || storedUser?.username || "",
         name: values.name.trim(),
         date: formatDate(values.date),
         time: formatTime(values.time),
